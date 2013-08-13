@@ -18,7 +18,14 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Create `config/initializers/omniauth.rb`:
+
+	Rails.application.config.middleware.use OmniAuth::Builder do
+    	provider :smartsheet, 'APP_CLIENT_ID', nil, :smartsheet_secret => 'APP_SECRET', :scope => 'READ_SHEETS'
+  	end
+  	
+You may need to customize the scope for your app.  See the [Smartsheet API 
+documentation](http://smartsheet.com/developers) for details.
 
 ## Contributing
 
@@ -27,3 +34,5 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/7930547437b683706b9cccc465807b52 "githalytics.com")](http://githalytics.com/smartsheet-platform/omniauth-smartsheet)
