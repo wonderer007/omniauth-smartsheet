@@ -10,9 +10,9 @@ module OmniAuth
       # This is where you pass the options you would pass when
       # initializing your consumer from the OAuth gem.
       option :client_options, {
-        :site => "https://api.smartsheet.com/1.1",
+        :site => "https://api.smartsheet.com/2.0",
         :authorize_url => "https://www.smartsheet.com/b/authorize",
-        :token_url => "https://api.smartsheet.com/1.1/token"
+        :token_url => "https://api.smartsheet.com/2.0/token"
       }
 
       # These are called after authentication has succeeded. If
@@ -37,7 +37,7 @@ module OmniAuth
       end
 
       def raw_info
-        @raw_info ||= access_token.get('user/me').parsed
+        @raw_info ||= access_token.get('users/me').parsed
       end
 
       def build_access_token
@@ -46,7 +46,7 @@ module OmniAuth
         # - instead, compute SHA-256 on secret + '|' + access_code
         smartsheet_hash = Digest::SHA256.new
         smartsheet_hash.update(
-          options.smartsheet_secret + '|' + request.params['code'] 
+          options.smartsheet_secret + '|' + request.params['code']
         )
         options.token_params.merge!(:hash => smartsheet_hash.hexdigest)
         super
