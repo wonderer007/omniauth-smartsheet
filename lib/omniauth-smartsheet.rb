@@ -12,7 +12,8 @@ module OmniAuth
       option :client_options, {
         :site => "https://api.smartsheet.com/2.0",
         :authorize_url => "https://www.smartsheet.com/b/authorize",
-        :token_url => "https://api.smartsheet.com/2.0/token"
+        :token_url => "https://api.smartsheet.com/2.0/token",
+        :auth_scheme => "request_body"
       }
 
       # These are called after authentication has succeeded. If
@@ -38,18 +39,6 @@ module OmniAuth
 
       def raw_info
         @raw_info ||= access_token.get('users/me').parsed
-      end
-
-      def build_access_token
-        # Smartsheet OAuth 2.0 requirements:
-        # - do not pass app secret in clear text, even over SSL
-        # - instead, compute SHA-256 on secret + '|' + access_code
-        smartsheet_hash = Digest::SHA256.new
-        smartsheet_hash.update(
-          options.smartsheet_secret + '|' + request.params['code']
-        )
-        options.token_params.merge!(:hash => smartsheet_hash.hexdigest)
-        super
       end
     end
   end
